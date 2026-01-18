@@ -180,169 +180,26 @@ end
 
 Aln = N_count_1 / Nl(1);
 burnin = 1;
-figure
-plot(burnin:Nl(1), Theta_trace{1,1}(burnin:end,1), 'r--');
-title('I')
-hold off
 
-figure
-plot(burnin:Nl(1), Theta_trace{1,1}(burnin:end,2), 'r--');
-title('J')
-hold off
-
-figure
-plot(burnin:Nl(1), Theta_trace{1,1}(burnin:end,3), 'r--');
-title('log(c)')
-hold off
-
-figure
-plot(burnin:Nl(1), Theta_trace{1,1}(burnin:end,4), 'r--');
-title('log(\lambda)')
-hold off
-
-figure
-plot(burnin:Nl(1), Theta_trace{1,1}(burnin:end,5), 'r--');
-title('log(b\_ext)')
-hold off
-
-figure
-plot(burnin:Nl(1), Theta_trace{1,1}(burnin:end,6), 'r--');
-title('log(\Gamma)')
-hold off
-
-figure
-plot(burnin:Nl(1), Theta_trace{1,1}(burnin:end,7), 'r--');
-title('log(\tau_1)')
-hold off
-
-figure
-plot(burnin:Nl(1), Theta_trace{1,1}(burnin:end,8), 'r--');
-title('log(\tau_2)')
-hold off
-
-figure
-plot(burnin:Nl(1), Theta_trace{1,1}(burnin:end,9), 'r--');
-title('log(\tau_3)')
-hold off
-
-
-burnin = 3000;  
-E_0 = mean(Theta_trace{1,1}(burnin:end,:), 1);
-figure('Name', 'PMMH Running Mean');
+% ============ PMMH convergence plot ============
+figure('Name', 'PMMH Trace Plots');
+param_names = {'I', 'J', 'log(c)', 'log(\lambda)', 'log(b_{ext})', ...
+               'log(\Gamma)', 'log(\sigma_1)', 'log(\sigma_2)', 'log(\sigma_3)'};
 for i = 1:9
     subplot(3,3,i)
-    running_mean_pmmh = cumsum(Theta_trace{1,1}(:,i)) ./ (1:Nl(1))';
-    plot(running_mean_pmmh, 'b-', 'LineWidth', 1)
-    yline(E_0(i), 'r--', 'LineWidth', 1.5);
-    %title(param_names{i})
+    plot(Theta_trace{1,1}(:,i), 'b-', 'LineWidth', 0.5)
+    xline(burnin, 'r--', 'LineWidth', 1);
+    title(param_names{i})
     if i > 6, xlabel('iterations'); end
 end
-sgtitle('PMMH Running Mean ')
+sgtitle('PMMH Trace Plots ')
 
 
 
-%{
-
-figure
-subplot(5,1,1)
-plot(burnin:Nl(1), Theta_trace{1,1}(burnin:end,1), 'r--');
-title('I')
-subplot(5,1,2)
-plot(burnin:Nl(1), Theta_trace{1,1}(burnin:end,2), 'r--');
-title('J')
-subplot(5,1,3)
-plot(burnin:Nl(1), Theta_trace{1,1}(burnin:end,3), 'r--');
-title('log(c)')
-subplot(5,1,4)
-plot(burnin:Nl(1), Theta_trace{1,1}(burnin:end,4), 'r--');
-title('log(\lambda)')
-subplot(5,1,5)
-plot(burnin:Nl(1), Theta_trace{1,1}(burnin:end,5), 'r--');
-title('log(\sigma_{obs})')
-
-%}
-%{
-Theta_iters = Theta_trace{1,1};
-burnin = 1;
-niter = 5000;
-desired_height = 0.12;
-figure_distance = 400;
-f = figure;
-f.Position = f.Position+[0 -figure_distance 0 figure_distance];
-
-ax = subplot(4,1,1);
-plot(burnin:3:niter,Theta_iters(burnin:3:end,1), 'r-',LineWidth=1);
-title('I');
-current_height = ax.Position(4);
-remaning_height = desired_height - current_height;
-ax.Position = ax.Position + [0 -remaning_height/2 0 remaning_height/2];
-ylabel('convergence value');
-xlabel('iterations');
-
-ax = subplot(4,1,2);
-plot(burnin:3:niter,Theta_iters(burnin:3:end,2), 'r-',LineWidth=1);
-title('J');
-current_height = ax.Position(4);
-remaning_height = desired_height - current_height;
-ax.Position = ax.Position + [0 -remaning_height/2 0 remaning_height/2];
-ylabel('convergence value');
-xlabel('iterations');
 
 
-ax = subplot(4,1,3);
-plot(burnin:3:niter,Theta_iters(burnin:3:end,3), 'r-',LineWidth=1);
-title('log(c)')
-current_height = ax.Position(4);
-remaning_height = desired_height - current_height;
-ax.Position = ax.Position + [0 -remaning_height/2 0 remaning_height/2];
-ylabel('convergence value');
-xlabel('iterations');
-
-ax = subplot(4,1,4);
-plot(burnin:3:niter,Theta_iters(burnin:3:end,4), 'r-',LineWidth=1);
-title('log(\lambda)')
-current_height = ax.Position(4);
-remaning_height = desired_height - current_height;
-ax.Position = ax.Position + [0 -remaning_height/2 0 remaning_height/2];
-ylabel('convergence value');
-xlabel('iterations');
 
 
-niter = 5000;
-desired_height = 0.12;
-figure_distance = 400;
-f = figure;
-f.Position = f.Position+[0 -figure_distance 0 figure_distance];
-
-ax = subplot(3,1,1);
-plot(burnin:3:niter,Theta_iters(burnin:3:end,1), 'r-',LineWidth=1);
-title('log(b_{ext})');
-current_height = ax.Position(4);
-remaning_height = desired_height - current_height;
-ax.Position = ax.Position + [0 -remaning_height/2 0 remaning_height/2];
-ylabel('convergence value');
-xlabel('iterations');
-
-ax = subplot(3,1,2);
-plot(burnin:3:niter,Theta_iters(burnin:3:end,2), 'r-',LineWidth=1);
-title('log(\Gamma)');
-current_height = ax.Position(4);
-remaning_height = desired_height - current_height;
-ax.Position = ax.Position + [0 -remaning_height/2 0 remaning_height/2];
-ylabel('convergence value');
-xlabel('iterations');
-
-
-ax = subplot(3,1,3);
-plot(burnin:3:niter,Theta_iters(burnin:3:end,3), 'r-',LineWidth=1);
-title('log(\tau) ')
-current_height = ax.Position(4);
-remaning_height = desired_height - current_height;
-ax.Position = ax.Position + [0 -remaning_height/2 0 remaning_height/2];
-ylabel('convergence value');
-xlabel('iterations');
-%}
-%}
 % simulate laws
 function X = simulate_law_model(delta_t, T, X0, I, J, c, lambda, b_ext, Gamma)
     particle_count = size(X0, 2);
