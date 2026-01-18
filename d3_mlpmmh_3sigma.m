@@ -3,55 +3,6 @@ clear;
 clc;
 format long
 
-%{
-T = 20;
-params = [0, 0.5, 0.3, 0.4, 0.4, 0.05];
-L = 8;
-delta_t = 2^(-L);
-
-X0 = sample_X0(params, 50);
-X = simulate_law_model(delta_t, T, X0,  0.5, 1, 0.08, 0.2, 0.5, 0.1);
-X_extct_1 = X(:,1,:);
-X_unit = X_extct_1(:,:,1/delta_t:1/delta_t:end);
-sigma_obs = 0.2*eye(3);
-noise = mvnrnd([0,0,0], sigma_obs, T);   
-noise = noise';   
-noise = reshape(noise, [3,1,T]);
-Y = X_unit + noise;
-X_gen = squeeze(X_unit);
-Y_obs = squeeze(Y);
-writematrix(Y_obs, 'd3_obs_T_20.txt');
-writematrix(X_gen, 'd3_exact_T_20.txt');
-
-
-
-figure
-plot((1:length(X_extct_1(1,:)))*delta_t,  X_extct_1(1,:), 'b-');
-hold on 
-plot((1:length(X_extct_1(1,:)))*delta_t,  X_extct_1(2,:), 'r-');
-hold on
-plot((1:length(X_extct_1(1,:)))*delta_t,  X_extct_1(3,:), 'g-');
-hold off;
-legend('x1', 'x2', 'x3'); 
-
-figure
-plot(1:T,  X_unit(1,:), 'b-');
-hold on 
-plot(1:T,  X_unit(2,:), 'r-');
-hold on
-plot(1:T,  X_unit(3,:), 'g-');
-hold off;
-legend('x1', 'x2', 'x3'); 
-
-figure
-plot(1:T,  Y(1,:), 'b-');
-hold on 
-plot(1:T,  Y(2,:), 'r-');
-hold on
-plot(1:T,  Y(3,:), 'g');
-hold off;
-legend('y1', 'y2', 'y3'); 
-%}
 
 T = 50;
 particle_count = 50;
@@ -318,23 +269,7 @@ for ll = 1:LP - Lmin
         if i > 6 , xlabel('iterations'); end
     end
     
-    % Plot2: H1 vs H2
-    figure('Name', ['Level ' num2str(ll + Lmin) ' - H1 vs H2']);
-    subplot(3,1,1)
-    plot(H1_data, 'b-'); hold on; plot(H2_data, 'r-');
-    legend('H_1 (fine)', 'H_2 (coarse)')
-    title('Log-Weights')
     
-    subplot(3,1,2)
-    plot(H1_data - H2_data, 'k-')
-    yline(0, 'r--');
-    title('H_1 - H_2 (near 0)')
-    ylabel('difference')
-    
-    subplot(3,1,3)
-    histogram(H1_data - H2_data, 50)
-    title('H_1 - H_2 distribution')
-    xlabel('difference')
   %}
 end
 % Step 3: final estimate
@@ -376,17 +311,7 @@ for i = 1:9
 end
 sgtitle('PMMH Trace Plots ')
 
-% ============ PMMH Running Mean ============
-figure('Name', 'PMMH Running Mean');
-for i = 1:9
-    subplot(3,3,i)
-    running_mean_pmmh = cumsum(Theta_trace{1,1}(:,i)) ./ (1:Nl(1))';
-    plot(running_mean_pmmh, 'b-', 'LineWidth', 1)
-    yline(E_0(i), 'r--', 'LineWidth', 1.5);
-    %title(param_names{i})
-    if i > 6, xlabel('iterations'); end
-end
-sgtitle('PMMH Running Mean ')
+
 
 
 % simulate laws
