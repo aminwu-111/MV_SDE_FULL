@@ -6,4 +6,4 @@ Main Implementation Files
 
 ‘d3_pmmh_3sigma.m’ and ‘3_mlpmmh_3sigma.m’ implement the PMCMC and MLPMCMC algorithms for the 3d neuron model, generating results shown in Figure 1,2,3
 
-For the rates of 3d neuron model for pmmh, run the code 'pmmh_l3_d3_rate.m' on ibex(super computer in KAUST) for different levels (maybe 5-8) each with 64 runs and then calculate the mean at each level and then calculate the rates for pmmh. Similar using the 'mlpmmh_l4_d3_rate.m'(5-8) for mlpmmh rates.(Table 2)
+For the rates of 3d neuron model for pmmh, run the code 'pmmh_l6.m' on ibex(super computer in KAUST) for different levels (maybe 5-8) each with 64 runs and then calculate the mean at each level and then calculate the rates for pmmh. Similar using the 'mlpmmh_l6.m'(5-8) for mlpmmh rates.(Table 2)
